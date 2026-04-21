@@ -368,34 +368,24 @@
     background: rgba(225, 6, 0, 0.1);
     color: var(--red);
   }
-  .service-checks {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.6rem;
-  }
-  .service-check { position: relative; }
-  .service-check input { position: absolute; opacity: 0; }
-  .service-check label {
-    padding: 1rem 0.8rem;
+  .wax-check { position: relative; }
+  .wax-check input[type="checkbox"] { position: absolute; opacity: 0; }
+  .wax-check label {
+    padding: 1rem;
     border: 1px solid #2a2a2a;
     background: var(--black);
     cursor: pointer;
     text-align: center;
     margin: 0;
     color: var(--text);
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+    letter-spacing: 0.1em;
     transition: all 0.2s;
+    display: block;
   }
-  .service-check label .price {
-    font-size: 1.3rem;
-    color: var(--red);
-    font-family: 'Bebas Neue', sans-serif;
-  }
-  .service-check input:checked + label {
+  .wax-check input:checked + label {
     border-color: var(--red);
-    background: rgba(225, 6, 0, 0.08);
+    background: rgba(225, 6, 0, 0.1);
+    color: var(--red);
   }
   .submit-btn {
     width: 100%;
@@ -485,90 +475,6 @@
   }
   .modal p { color: var(--text-dim); margin-bottom: 1.5rem; line-height: 1.5; }
 
-  .admin-view { padding: 2rem 1.5rem; max-width: 1000px; margin: 0 auto; }
-  .admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .admin-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    letter-spacing: 0.05em;
-  }
-  .admin-title span { color: var(--red); }
-  .booking-item {
-    background: var(--dark);
-    border: 1px solid #222;
-    border-left: 4px solid var(--red);
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  .booking-item .booking-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .booking-item .booking-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 0.05em;
-  }
-  .booking-item .booking-total {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: var(--red);
-  }
-  .booking-item .booking-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 0.8rem;
-    font-size: 0.9rem;
-    color: var(--text-dim);
-  }
-  .booking-item .booking-details strong { color: var(--text); font-weight: 500; }
-  .booking-item .booking-actions {
-    margin-top: 1rem;
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
-  .booking-item .booking-actions a, .booking-item .booking-actions button {
-    padding: 0.5rem 1rem;
-    background: transparent;
-    border: 1px solid #333;
-    color: var(--text);
-    font-size: 0.85rem;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-  }
-  .booking-item .booking-actions a:hover, .booking-item .booking-actions button:hover {
-    border-color: var(--red);
-    color: var(--red);
-  }
-  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-dim); }
-  .admin-controls { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-  .admin-controls button {
-    padding: 0.6rem 1.2rem;
-    background: transparent;
-    border: 1px solid #333;
-    color: var(--text);
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 0.1em;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .admin-controls button:hover { border-color: var(--red); color: var(--red); }
-
   @media (max-width: 640px) {
     .form { padding: 2rem 1.2rem; }
     .form-row { grid-template-columns: 1fr; }
@@ -653,20 +559,42 @@
 
       <form class="form" id="bookingForm">
         <div class="form-group full">
-          <label>Select Services <span class="req">*</span></label>
-          <div class="service-checks">
-            <div class="service-check">
-              <input type="checkbox" id="ext" data-name="Exterior Wash" data-price="25">
-              <label for="ext">Exterior<span class="price">$25</span></label>
+          <label>Vehicle Type <span class="req">*</span></label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="vehicleType" id="sedan" value="sedan" required>
+              <label for="sedan">Sedan / Coupe</label>
             </div>
-            <div class="service-check">
-              <input type="checkbox" id="int" data-name="Interior Detail" data-price="25">
-              <label for="int">Interior<span class="price">$25</span></label>
+            <div class="radio-option">
+              <input type="radio" name="vehicleType" id="suv" value="suv">
+              <label for="suv">SUV / Truck</label>
             </div>
-            <div class="service-check">
-              <input type="checkbox" id="wax" data-name="Wax" data-price="20">
-              <label for="wax">Wax<span class="price">$20</span></label>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Service <span class="req">*</span></label>
+          <div class="radio-group" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="radio-option">
+              <input type="radio" name="service" id="interior" value="interior" required>
+              <label for="interior">Interior Only</label>
             </div>
+            <div class="radio-option">
+              <input type="radio" name="service" id="exterior" value="exterior">
+              <label for="exterior">Exterior Only</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="service" id="both" value="both">
+              <label for="both">Interior + Exterior</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Add-On</label>
+          <div class="wax-check">
+            <input type="checkbox" id="waxCheck">
+            <label for="waxCheck">Add wax <span id="waxPrice">(+$15)</span></label>
           </div>
         </div>
 
@@ -738,7 +666,7 @@
           <textarea id="notes" rows="3" placeholder="Anything specific we should know?"></textarea>
         </div>
 
-        <button type="submit" class="btn submit-btn">Request Booking →</button>
+        <button type="submit" class="btn submit-btn" id="submitBtn">Request Booking →</button>
       </form>
     </div>
   </section>
@@ -749,32 +677,14 @@
     </div>
     <p>Premium Clean. Orlando / FL</p>
     <div class="contact-links">
-      <a href="tel:4074806340">📞 (407) 480-6340</a>
-      <a href="sms:4074806340">💬 Text Us</a>
+      <a href="tel:4072475772">📞 (407) 247-5772</a>
+      <a href="sms:4072475772">💬 Text Us</a>
       <a href="https://instagram.com/decadetailing_" target="_blank">📸 @decadetailing_</a>
     </div>
     <p style="margin-top:1.5rem; font-size:0.75rem;">© 2026 Deca Detailing. All rights reserved.</p>
   </footer>
 </div>
 
-<div id="adminView" style="display:none;">
-  <div class="admin-view">
-    <div class="admin-header">
-      <div>
-        <div class="logo" style="font-size: 1.5rem; margin-bottom: 1rem;">
-          <span class="deca">DECA</span><span class="detailing">DETAILING</span>
-        </div>
-        <div class="admin-title">Admin <span>Panel</span></div>
-      </div>
-      <div class="admin-controls">
-        <button onclick="exportBookings()">Export CSV</button>
-        <button onclick="clearAllBookings()">Clear All</button>
-        <button onclick="window.location.href = window.location.pathname">Exit Admin</button>
-      </div>
-    </div>
-    <div id="bookingsList"></div>
-  </div>
-</div>
 
 <div class="modal-bg" id="modal">
   <div class="modal">
@@ -783,205 +693,104 @@
         <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <h3>Booking Received!</h3>
-    <p>Your email app will open with booking details pre-filled. Send it to confirm, and we'll text or call you shortly.</p>
+    <h3>Booking Confirmed!</h3>
+    <p>A confirmation email is on the way.</p>
     <button class="btn" onclick="document.getElementById('modal').classList.remove('active')">Got It</button>
   </div>
 </div>
 
 <script>
-  // ============ CONFIG ============
-  const OWNER_EMAIL = 'YOUR_EMAIL_HERE@example.com';
-  const OWNER_PHONE = '4074806340';
-  const ADMIN_KEY = 'deca2026';
-
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('admin') === ADMIN_KEY) {
-    document.getElementById('mainSite').style.display = 'none';
-    document.getElementById('adminView').style.display = 'block';
-    renderBookings();
-  }
+  const PRICES = {
+    sedan: { interior: 40, exterior: 40, both: 70, wax: 15 },
+    suv:   { interior: 60, exterior: 60, both: 100, wax: 20 },
+  };
 
   const dateInput = document.getElementById('dateInput');
   if (dateInput) {
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.min = today;
+    dateInput.min = new Date().toISOString().split('T')[0];
   }
-
-  const checkboxes = document.querySelectorAll('.service-check input');
-  const totalEl = document.getElementById('totalAmount');
 
   function updateTotal() {
-    let total = 0;
-    checkboxes.forEach(cb => {
-      if (cb.checked) total += parseInt(cb.dataset.price);
-    });
-    if (totalEl) totalEl.textContent = '$' + total;
+    const vehicleType = document.querySelector('input[name="vehicleType"]:checked')?.value;
+    const service = document.querySelector('input[name="service"]:checked')?.value;
+    const wax = document.getElementById('waxCheck').checked;
+
+    const waxPriceEl = document.getElementById('waxPrice');
+    if (waxPriceEl) {
+      waxPriceEl.textContent = vehicleType === 'suv' ? '(+$20)' : '(+$15)';
+    }
+
+    if (!vehicleType || !service) {
+      document.getElementById('totalAmount').textContent = '$0';
+      return;
+    }
+
+    const pricing = PRICES[vehicleType];
+    let total = pricing[service] || 0;
+    if (wax) total += pricing.wax;
+    document.getElementById('totalAmount').textContent = '$' + total;
   }
-  checkboxes.forEach(cb => cb.addEventListener('change', updateTotal));
+
+  document.querySelectorAll('input[name="vehicleType"], input[name="service"]').forEach(el => {
+    el.addEventListener('change', updateTotal);
+  });
+  document.getElementById('waxCheck').addEventListener('change', updateTotal);
 
   const bookingForm = document.getElementById('bookingForm');
   if (bookingForm) {
-    bookingForm.addEventListener('submit', function(e) {
+    bookingForm.addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const selectedServices = [];
-      let total = 0;
-      checkboxes.forEach(cb => {
-        if (cb.checked) {
-          selectedServices.push(cb.dataset.name + ' ($' + cb.dataset.price + ')');
-          total += parseInt(cb.dataset.price);
-        }
-      });
-
-      if (selectedServices.length === 0) {
-        alert('Please select at least one service.');
-        return;
-      }
-
+      const vehicleType = document.querySelector('input[name="vehicleType"]:checked')?.value;
+      const service = document.querySelector('input[name="service"]:checked')?.value;
       const serviceTypeEl = document.querySelector('input[name="serviceType"]:checked');
-      if (!serviceTypeEl) {
-        alert('Please select Mobile or Drop-off.');
-        return;
-      }
 
-      const booking = {
-        id: Date.now(),
-        submittedAt: new Date().toISOString(),
+      if (!vehicleType) { alert('Please select a vehicle type.'); return; }
+      if (!service) { alert('Please select a service.'); return; }
+      if (!serviceTypeEl) { alert('Please select Mobile or Drop-off.'); return; }
+
+      const formData = {
+        vehicleType,
+        service,
+        wax: document.getElementById('waxCheck').checked,
+        serviceType: serviceTypeEl.value,
         name: document.getElementById('name').value,
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
-        services: selectedServices,
-        total: total,
-        serviceType: serviceTypeEl.value,
         date: document.getElementById('dateInput').value,
         time: document.getElementById('time').value,
         vehicle: document.getElementById('vehicle').value,
         address: document.getElementById('address').value,
-        notes: document.getElementById('notes').value
+        notes: document.getElementById('notes').value,
       };
 
-      const bookings = JSON.parse(localStorage.getItem('deca_bookings') || '[]');
-      bookings.unshift(booking);
-      localStorage.setItem('deca_bookings', JSON.stringify(bookings));
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Booking...';
 
-      const emailBody = `NEW DECA DETAILING BOOKING
-==============================
+      try {
+        const response = await fetch('/.netlify/functions/book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
 
-CUSTOMER: ${booking.name}
-PHONE: ${booking.phone}
-EMAIL: ${booking.email || 'Not provided'}
+        const data = await response.json();
 
-SERVICES:
-${booking.services.map(s => '  • ' + s).join('\n')}
-
-TOTAL: $${booking.total}
-
-SERVICE TYPE: ${booking.serviceType}
-DATE: ${booking.date}
-TIME: ${booking.time}
-
-VEHICLE: ${booking.vehicle}
-ADDRESS: ${booking.address || 'N/A (drop-off)'}
-
-NOTES: ${booking.notes || 'None'}
-
-Submitted: ${new Date(booking.submittedAt).toLocaleString()}`;
-
-      const mailtoLink = `mailto:${OWNER_EMAIL}?subject=${encodeURIComponent('🚗 New Booking - ' + booking.name)}&body=${encodeURIComponent(emailBody)}`;
-
-      document.getElementById('modal').classList.add('active');
-
-      setTimeout(() => {
-        window.location.href = mailtoLink;
-      }, 1500);
-
-      this.reset();
-      updateTotal();
+        if (response.ok && data.success) {
+          document.getElementById('modal').classList.add('active');
+          this.reset();
+          updateTotal();
+        } else {
+          alert(data.error || 'Something went wrong. Please try again.');
+        }
+      } catch {
+        alert('Network error. Please check your connection and try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Request Booking →';
+      }
     });
-  }
-
-  function renderBookings() {
-    const bookings = JSON.parse(localStorage.getItem('deca_bookings') || '[]');
-    const list = document.getElementById('bookingsList');
-
-    if (bookings.length === 0) {
-      list.innerHTML = '<div class="empty-state"><p>No bookings yet. Submissions from this device will appear here.</p></div>';
-      return;
-    }
-
-    list.innerHTML = bookings.map(b => `
-      <div class="booking-item">
-        <div class="booking-top">
-          <div>
-            <div class="booking-name">${escapeHtml(b.name)}</div>
-            <div style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.2rem;">
-              Submitted ${new Date(b.submittedAt).toLocaleString()}
-            </div>
-          </div>
-          <div class="booking-total">$${b.total}</div>
-        </div>
-        <div class="booking-details">
-          <div><strong>Phone:</strong> ${escapeHtml(b.phone)}</div>
-          <div><strong>Email:</strong> ${escapeHtml(b.email || 'N/A')}</div>
-          <div><strong>Date:</strong> ${escapeHtml(b.date)} @ ${escapeHtml(b.time)}</div>
-          <div><strong>Type:</strong> ${escapeHtml(b.serviceType)}</div>
-          <div><strong>Vehicle:</strong> ${escapeHtml(b.vehicle)}</div>
-          <div><strong>Address:</strong> ${escapeHtml(b.address || 'N/A')}</div>
-          <div style="grid-column: 1 / -1;"><strong>Services:</strong> ${b.services.map(escapeHtml).join(', ')}</div>
-          ${b.notes ? `<div style="grid-column: 1 / -1;"><strong>Notes:</strong> ${escapeHtml(b.notes)}</div>` : ''}
-        </div>
-        <div class="booking-actions">
-          <a href="tel:${encodeURIComponent(b.phone)}">📞 Call</a>
-          <a href="sms:${encodeURIComponent(b.phone)}">💬 Text</a>
-          ${b.email ? `<a href="mailto:${encodeURIComponent(b.email)}">✉️ Email</a>` : ''}
-          <button onclick="deleteBooking(${b.id})">Delete</button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function escapeHtml(s) {
-    if (!s) return '';
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  function deleteBooking(id) {
-    if (!confirm('Delete this booking?')) return;
-    let bookings = JSON.parse(localStorage.getItem('deca_bookings') || '[]');
-    bookings = bookings.filter(b => b.id !== id);
-    localStorage.setItem('deca_bookings', JSON.stringify(bookings));
-    renderBookings();
-  }
-
-  function clearAllBookings() {
-    if (!confirm('Delete ALL bookings? This cannot be undone.')) return;
-    localStorage.removeItem('deca_bookings');
-    renderBookings();
-  }
-
-  function exportBookings() {
-    const bookings = JSON.parse(localStorage.getItem('deca_bookings') || '[]');
-    if (bookings.length === 0) { alert('No bookings to export.'); return; }
-
-    const headers = ['Submitted', 'Name', 'Phone', 'Email', 'Services', 'Total', 'Type', 'Date', 'Time', 'Vehicle', 'Address', 'Notes'];
-    const rows = bookings.map(b => [
-      new Date(b.submittedAt).toLocaleString(),
-      b.name, b.phone, b.email, b.services.join(' + '), '$' + b.total,
-      b.serviceType, b.date, b.time, b.vehicle, b.address, b.notes
-    ]);
-
-    const csv = [headers, ...rows].map(row =>
-      row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(',')
-    ).join('\n');
-
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'deca-bookings-' + new Date().toISOString().split('T')[0] + '.csv';
-    a.click();
-    URL.revokeObjectURL(url);
   }
 </script>
 
