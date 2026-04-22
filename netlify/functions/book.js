@@ -103,15 +103,20 @@ exports.handler = async function (event) {
       timeZone: 'America/New_York',
       language: 'en',
     },
+    location: serviceType.includes('Mobile')
+      ? (address || 'Mobile — address not provided')
+      : 'Drop-off: 10227 Park Estates Ave, Orlando, FL',
     bookingFieldsResponses: {
       phone,
       vehicle,
       serviceType,
-      address: address || 'N/A',
+      address: serviceType.includes('Mobile') ? (address || 'N/A') : '10227 Park Estates Ave, Orlando, FL',
       wax: wax ? 'Yes' : 'No',
       notes: notes || 'None',
     },
   };
+
+  console.log('Cal.com request body:', JSON.stringify(payload, null, 2));
 
   try {
     const calResponse = await fetch('https://api.cal.com/v2/bookings', {
