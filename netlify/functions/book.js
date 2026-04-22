@@ -1,14 +1,6 @@
 const EVENT_IDS = {
-  sedan: {
-    interior: 5427208,
-    exterior: 5427262,
-    both: 5427270,
-  },
-  suv: {
-    interior: 5427286,
-    exterior: 5427309,
-    both: 5429916,
-  },
+  sedan: { interior: 5444730, exterior: 5444739, both: 5444743 },
+  suv: { interior: 5444744, exterior: 5444752, both: 5444754 },
 };
 
 const CORS_HEADERS = {

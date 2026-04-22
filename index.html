@@ -522,6 +522,21 @@
     document.getElementById('totalAmount').textContent = '$' + (p[service] + (wax ? p.wax : 0));
   }
 
+  document.querySelectorAll('input[name="serviceType"]').forEach(el => {
+    el.addEventListener('change', function() {
+      const addressInput = document.getElementById('address');
+      if (this.value === 'Drop-off') {
+        addressInput.value = '10227 Park Estates Ave, Orlando, FL';
+        addressInput.readOnly = true;
+        addressInput.style.color = 'var(--text-dim)';
+      } else {
+        addressInput.value = '';
+        addressInput.readOnly = false;
+        addressInput.style.color = '';
+      }
+    });
+  });
+
   document.querySelectorAll('input[name="vehicleType"], input[name="service"]').forEach(el => {
     el.addEventListener('change', updateTotal);
   });
