@@ -179,6 +179,9 @@
     font-size: 0.95rem;
     transition: border-color 0.2s;
   }
+  input[type="date"] { cursor: pointer; }
+  input[type="date"]::-webkit-calendar-picker-indicator { width: 100%; position: absolute; left: 0; opacity: 0; cursor: pointer; }
+  input[type="date"] { position: relative; }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--red); }
 
   .card-group { display: grid; gap: 0.7rem; }
@@ -522,7 +525,10 @@
   };
 
   const dateInput = document.getElementById('dateInput');
-  if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+  if (dateInput) {
+    dateInput.min = new Date().toISOString().split('T')[0];
+    dateInput.addEventListener('click', function() { this.showPicker(); });
+  }
 
   function updateTotal() {
     const vehicleType = document.querySelector('input[name="vehicleType"]:checked')?.value;
