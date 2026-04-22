@@ -225,6 +225,19 @@
   .total-bar .label-txt { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.15em; color: var(--text-dim); font-size: 0.9rem; }
   .total-bar .amount { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--red); }
 
+  .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  .time-option { position: relative; }
+  .time-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .time-option label {
+    display: block; text-align: center; padding: 0.65rem 0.4rem;
+    border: 1px solid #2a2a2a; background: var(--black);
+    cursor: pointer; font-size: 0.82rem; color: var(--text-dim);
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+  .time-option input:checked + label { border-color: var(--red); background: rgba(225,6,0,0.07); color: var(--text); }
+  .time-option label:hover { border-color: #444; color: var(--text); }
+
   .submit-btn { width: 100%; padding: 1.3rem; font-size: 1.4rem; margin-top: 0.5rem; justify-content: center; }
 
   footer { padding: 3rem 1.5rem 2rem; text-align: center; border-top: 1px solid #1a1a1a; margin-top: 4rem; }
@@ -425,21 +438,35 @@
           <input type="email" id="email" placeholder="you@email.com">
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Preferred Date <span class="req">*</span></label>
-            <input type="date" id="dateInput" required>
-          </div>
-          <div class="form-group">
-            <label>Preferred Time <span class="req">*</span></label>
-            <select id="time" required>
-              <option value="">Select time</option>
-              <option>8:00 AM</option>
-              <option>10:00 AM</option>
-              <option>12:00 PM</option>
-              <option>2:00 PM</option>
-              <option>4:00 PM</option>
-            </select>
+        <div class="form-group">
+          <label>Preferred Date <span class="req">*</span></label>
+          <input type="date" id="dateInput" required>
+        </div>
+
+        <div class="form-group">
+          <label>Preferred Time <span class="req">*</span></label>
+          <div class="time-grid">
+            <div class="time-option"><input type="radio" name="time" id="t1" value="8:00 AM" required><label for="t1">8:00 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t2" value="8:30 AM"><label for="t2">8:30 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t3" value="9:00 AM"><label for="t3">9:00 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t4" value="9:30 AM"><label for="t4">9:30 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t5" value="10:00 AM"><label for="t5">10:00 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t6" value="10:30 AM"><label for="t6">10:30 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t7" value="11:00 AM"><label for="t7">11:00 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t8" value="11:30 AM"><label for="t8">11:30 AM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t9" value="12:00 PM"><label for="t9">12:00 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t10" value="12:30 PM"><label for="t10">12:30 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t11" value="1:00 PM"><label for="t11">1:00 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t12" value="1:30 PM"><label for="t12">1:30 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t13" value="2:00 PM"><label for="t13">2:00 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t14" value="2:30 PM"><label for="t14">2:30 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t15" value="3:00 PM"><label for="t15">3:00 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t16" value="3:30 PM"><label for="t16">3:30 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t17" value="4:00 PM"><label for="t17">4:00 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t18" value="4:30 PM"><label for="t18">4:30 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t19" value="5:00 PM"><label for="t19">5:00 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t20" value="5:30 PM"><label for="t20">5:30 PM</label></div>
+            <div class="time-option"><input type="radio" name="time" id="t21" value="6:00 PM"><label for="t21">6:00 PM</label></div>
           </div>
         </div>
 
@@ -550,9 +577,11 @@
       const service      = document.querySelector('input[name="service"]:checked')?.value;
       const serviceTypeEl = document.querySelector('input[name="serviceType"]:checked');
 
+      const timeEl = document.querySelector('input[name="time"]:checked');
       if (!vehicleType)   { alert('Please select a vehicle type.'); return; }
       if (!service)       { alert('Please select a service.'); return; }
       if (!serviceTypeEl) { alert('Please select Mobile or Drop-off.'); return; }
+      if (!timeEl)        { alert('Please select a time.'); return; }
 
       const formData = {
         vehicleType, service,
@@ -562,7 +591,7 @@
         phone:   document.getElementById('phone').value,
         email:   document.getElementById('email').value,
         date:    document.getElementById('dateInput').value,
-        time:    document.getElementById('time').value,
+        time:    timeEl.value,
         vehicle: document.getElementById('vehicle').value,
         address: document.getElementById('address').value,
         notes:   document.getElementById('notes').value,
