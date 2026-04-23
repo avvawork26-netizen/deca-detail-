@@ -240,6 +240,17 @@
   }
   .time-option input:checked + label { border-color: var(--red); background: rgba(225,6,0,0.07); color: var(--text); }
   .time-option label:hover { border-color: #444; color: var(--text); }
+  .period-group { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.7rem; }
+  .period-btn {
+    padding: 0.75rem 0.3rem; border: 1px solid #2a2a2a; background: var(--black);
+    cursor: pointer; text-align: center; color: var(--text-dim); font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.08em; transition: all 0.15s; line-height: 1.3;
+  }
+  .period-btn:hover { border-color: #444; color: var(--text); }
+  .period-btn.active { border-color: var(--red); background: rgba(225,6,0,0.07); color: var(--text); }
+  .period-btn .period-range { display: block; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0; margin-top: 0.15rem; }
+  .period-btn.active .period-range { color: var(--red); }
+  #timeSlots { display: none; }
 
   .submit-btn { width: 100%; padding: 1.3rem; font-size: 1.4rem; margin-top: 0.5rem; justify-content: center; }
 
@@ -433,6 +444,7 @@
           <div class="form-group">
             <label>Phone <span class="req">*</span></label>
             <input type="tel" id="phone" required placeholder="(407) 000-0000">
+            <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.4rem;">We'll call or text you to confirm your appointment</p>
           </div>
         </div>
 
@@ -448,29 +460,13 @@
 
         <div class="form-group">
           <label>Preferred Time <span class="req">*</span></label>
-          <div class="time-grid">
-            <div class="time-option"><input type="radio" name="time" id="t1" value="8:00 AM" required><label for="t1">8:00 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t2" value="8:30 AM"><label for="t2">8:30 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t3" value="9:00 AM"><label for="t3">9:00 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t4" value="9:30 AM"><label for="t4">9:30 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t5" value="10:00 AM"><label for="t5">10:00 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t6" value="10:30 AM"><label for="t6">10:30 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t7" value="11:00 AM"><label for="t7">11:00 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t8" value="11:30 AM"><label for="t8">11:30 AM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t9" value="12:00 PM"><label for="t9">12:00 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t10" value="12:30 PM"><label for="t10">12:30 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t11" value="1:00 PM"><label for="t11">1:00 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t12" value="1:30 PM"><label for="t12">1:30 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t13" value="2:00 PM"><label for="t13">2:00 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t14" value="2:30 PM"><label for="t14">2:30 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t15" value="3:00 PM"><label for="t15">3:00 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t16" value="3:30 PM"><label for="t16">3:30 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t17" value="4:00 PM"><label for="t17">4:00 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t18" value="4:30 PM"><label for="t18">4:30 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t19" value="5:00 PM"><label for="t19">5:00 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t20" value="5:30 PM"><label for="t20">5:30 PM</label></div>
-            <div class="time-option"><input type="radio" name="time" id="t21" value="6:00 PM"><label for="t21">6:00 PM</label></div>
+          <div class="period-group">
+            <button type="button" class="period-btn" data-period="morning">Morning<span class="period-range">8–10 AM</span></button>
+            <button type="button" class="period-btn" data-period="midday">Midday<span class="period-range">11 AM–1 PM</span></button>
+            <button type="button" class="period-btn" data-period="afternoon">Afternoon<span class="period-range">2–4 PM</span></button>
+            <button type="button" class="period-btn" data-period="evening">Evening<span class="period-range">4:30–6 PM</span></button>
           </div>
+          <div class="time-grid" id="timeSlots"></div>
         </div>
 
         <div class="form-group">
@@ -523,6 +519,26 @@
     sedan: { interior: 40, exterior: 40, both: 70, wax: 15 },
     suv:   { interior: 60, exterior: 60, both: 100, wax: 20 },
   };
+
+  const PERIOD_TIMES = {
+    morning:   ['8:00 AM', '9:00 AM', '10:00 AM'],
+    midday:    ['11:00 AM', '12:00 PM', '1:00 PM'],
+    afternoon: ['2:00 PM', '3:00 PM', '4:00 PM'],
+    evening:   ['4:30 PM', '5:00 PM', '6:00 PM'],
+  };
+
+  document.querySelectorAll('.period-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const slots = PERIOD_TIMES[this.dataset.period];
+      const container = document.getElementById('timeSlots');
+      container.style.display = 'grid';
+      container.innerHTML = slots.map((t, i) =>
+        `<div class="time-option"><input type="radio" name="time" id="ts${i}" value="${t}"><label for="ts${i}">${t}</label></div>`
+      ).join('');
+    });
+  });
 
   const dateInput = document.getElementById('dateInput');
   if (dateInput) {
