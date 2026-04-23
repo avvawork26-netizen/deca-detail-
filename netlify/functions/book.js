@@ -113,7 +113,7 @@ exports.handler = async function (event) {
       serviceType,
       address: serviceType.includes('Mobile') ? (address || 'N/A') : '10227 Park Estates Ave, Orlando, FL',
       wax: wax ? 'Yes' : 'No',
-      notes: `${notes || ''}${wax ? '\n\nWAX ADD-ON: Yes (+$' + (vehicleType === 'suv' ? '20' : '15') + ')' : ''}`.trim() || 'None',
+      notes: `${notes || ''}${wax ? '\nWAX ADD-ON: Yes (+$' + (vehicleType === 'suv' ? '20' : '15') + ')' : ''}`.trim() || 'None',
     },
   };
 

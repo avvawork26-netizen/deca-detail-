@@ -240,6 +240,8 @@
   }
   .time-option input:checked + label { border-color: var(--red); background: rgba(225,6,0,0.07); color: var(--text); }
   .time-option label:hover { border-color: #444; color: var(--text); }
+  .time-option.unavailable label { color: var(--text-dim); opacity: 0.45; text-decoration: line-through; cursor: not-allowed; }
+  .time-option.unavailable label:hover { border-color: #2a2a2a; }
   .period-group { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.7rem; }
   .period-btn {
     padding: 0.75rem 0.3rem; border: 1px solid #2a2a2a; background: var(--black);
@@ -528,16 +530,47 @@
     evening:   ['4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM'],
   };
 
+  const EVENT_IDS = {
+    sedan: { interior: 5444730, exterior: 5444739, both: 5444743 },
+    suv:   { interior: 5444744, exterior: 5444752, both: 5444754 },
+  };
+
+  let availableTimes = null;
+
+  async function fetchAvailability(date) {
+    const vehicleType = document.querySelector('input[name="vehicleType"]:checked')?.value;
+    const service     = document.querySelector('input[name="service"]:checked')?.value;
+    if (!vehicleType || !service) { availableTimes = null; return; }
+    const eventTypeId = EVENT_IDS[vehicleType]?.[service];
+    if (!eventTypeId) { availableTimes = null; return; }
+    const start = new Date(date + 'T00:00:00').toISOString();
+    const end   = new Date(date + 'T23:59:59').toISOString();
+    try {
+      const res  = await fetch(`https://api.cal.com/v1/slots?eventTypeId=${eventTypeId}&startTime=${start}&endTime=${end}&timeZone=America/New_York`);
+      const data = await res.json();
+      availableTimes = Object.values(data.slots || {}).flat().map(s =>
+        new Date(s.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+      );
+    } catch {
+      availableTimes = null;
+    }
+  }
+
+  function renderTimeSlots(period) {
+    const slots = PERIOD_TIMES[period];
+    const container = document.getElementById('timeSlots');
+    container.style.display = 'grid';
+    container.innerHTML = slots.map((t, i) => {
+      const unavailable = availableTimes !== null && !availableTimes.includes(t);
+      return `<div class="time-option${unavailable ? ' unavailable' : ''}"><input type="radio" name="time" id="ts${i}" value="${t}"${unavailable ? ' disabled' : ''}><label for="ts${i}">${t}</label></div>`;
+    }).join('');
+  }
+
   document.querySelectorAll('.period-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
-      const slots = PERIOD_TIMES[this.dataset.period];
-      const container = document.getElementById('timeSlots');
-      container.style.display = 'grid';
-      container.innerHTML = slots.map((t, i) =>
-        `<div class="time-option"><input type="radio" name="time" id="ts${i}" value="${t}"><label for="ts${i}">${t}</label></div>`
-      ).join('');
+      renderTimeSlots(this.dataset.period);
     });
   });
 
@@ -545,6 +578,12 @@
   if (dateInput) {
     dateInput.min = new Date().toISOString().split('T')[0];
     dateInput.addEventListener('click', function() { this.showPicker(); });
+    dateInput.addEventListener('change', async function() {
+      if (!this.value) return;
+      await fetchAvailability(this.value);
+      const activePeriod = document.querySelector('.period-btn.active');
+      if (activePeriod) renderTimeSlots(activePeriod.dataset.period);
+    });
   }
 
   function updateTotal() {
@@ -588,7 +627,15 @@
   });
 
   document.querySelectorAll('input[name="vehicleType"], input[name="service"]').forEach(el => {
-    el.addEventListener('change', updateTotal);
+    el.addEventListener('change', async function() {
+      updateTotal();
+      const d = dateInput?.value;
+      if (d) {
+        await fetchAvailability(d);
+        const activePeriod = document.querySelector('.period-btn.active');
+        if (activePeriod) renderTimeSlots(activePeriod.dataset.period);
+      }
+    });
   });
   document.getElementById('waxCheck').addEventListener('change', updateTotal);
 
