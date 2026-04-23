@@ -462,10 +462,10 @@
         <div class="form-group">
           <label>Preferred Time <span class="req">*</span></label>
           <div class="period-group">
-            <button type="button" class="period-btn" data-period="morning">Morning<span class="period-range">8–10 AM</span></button>
+            <button type="button" class="period-btn" data-period="morning">Morning<span class="period-range">9–11 AM</span></button>
             <button type="button" class="period-btn" data-period="midday">Midday<span class="period-range">11 AM–1 PM</span></button>
-            <button type="button" class="period-btn" data-period="afternoon">Afternoon<span class="period-range">2–4 PM</span></button>
-            <button type="button" class="period-btn" data-period="evening">Evening<span class="period-range">4:30–6 PM</span></button>
+            <button type="button" class="period-btn" data-period="afternoon">Afternoon<span class="period-range">1–4 PM</span></button>
+            <button type="button" class="period-btn" data-period="evening">Evening<span class="period-range">4–6 PM</span></button>
           </div>
           <div class="time-grid" id="timeSlots"></div>
         </div>
@@ -522,10 +522,10 @@
   };
 
   const PERIOD_TIMES = {
-    morning:   ['8:00 AM', '9:00 AM', '10:00 AM'],
-    midday:    ['11:00 AM', '12:00 PM', '1:00 PM'],
-    afternoon: ['2:00 PM', '3:00 PM', '4:00 PM'],
-    evening:   ['4:30 PM', '5:00 PM', '6:00 PM'],
+    morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM'],
+    midday:    ['11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM'],
+    afternoon: ['1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'],
+    evening:   ['4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM'],
   };
 
   document.querySelectorAll('.period-btn').forEach(btn => {
