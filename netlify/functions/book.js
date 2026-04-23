@@ -106,13 +106,14 @@ exports.handler = async function (event) {
     location: serviceType.includes('Mobile')
       ? (address || 'Mobile — address not provided')
       : 'Drop-off: 10227 Park Estates Ave, Orlando, FL',
+    title: `${name} — ${service} (${vehicleType})${wax ? ' + WAX' : ''}`,
     bookingFieldsResponses: {
       phone,
       vehicle,
       serviceType,
       address: serviceType.includes('Mobile') ? (address || 'N/A') : '10227 Park Estates Ave, Orlando, FL',
       wax: wax ? 'Yes' : 'No',
-      notes: notes || 'None',
+      notes: `${notes || ''}${wax ? '\n\nWAX ADD-ON: Yes (+$' + (vehicleType === 'suv' ? '20' : '15') + ')' : ''}`.trim() || 'None',
     },
   };
 
