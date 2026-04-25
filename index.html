@@ -425,35 +425,15 @@
           <span class="amount" id="totalAmount">$0</span>
         </div>
 
-        <div class="form-group">
-          <label>Service Type <span class="req">*</span></label>
-          <div class="card-group cols-2">
-            <div class="card-option">
-              <input type="radio" name="serviceType" id="mobile" value="Mobile — Come to me" required>
-              <label for="mobile"><span class="card-title">Mobile</span><span class="card-price">We come to you</span></label>
-            </div>
-            <div class="card-option">
-              <input type="radio" name="serviceType" id="dropoff" value="Drop-off">
-              <label for="dropoff"><span class="card-title">Drop-Off</span><span class="card-price">Bring it to us</span></label>
-            </div>
-          </div>
-        </div>
-
         <div class="form-row">
           <div class="form-group">
             <label>Full Name <span class="req">*</span></label>
             <input type="text" id="name" required placeholder="John Doe">
           </div>
           <div class="form-group">
-            <label>Phone <span class="req">*</span></label>
-            <input type="tel" id="phone" required placeholder="(407) 000-0000">
-            <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.4rem;">We'll call or text you to confirm your appointment</p>
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="email" required placeholder="you@email.com">
           </div>
-        </div>
-
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="email" placeholder="you@email.com">
         </div>
 
         <div class="form-group">
@@ -473,13 +453,8 @@
         </div>
 
         <div class="form-group">
-          <label>Vehicle (Year / Make / Model) <span class="req">*</span></label>
-          <input type="text" id="vehicle" required placeholder="2020 Hyundai Elantra">
-        </div>
-
-        <div class="form-group">
-          <label>Address (for mobile service)</label>
-          <input type="text" id="address" placeholder="Orlando, FL">
+          <label>Your Address <span class="req">*</span></label>
+          <input type="text" id="address" required placeholder="123 Main St, Orlando, FL">
         </div>
 
         <div class="form-group">
@@ -611,21 +586,6 @@
     document.getElementById('totalAmount').textContent = '$' + (p[service] + (wax ? p.wax : 0));
   }
 
-  document.querySelectorAll('input[name="serviceType"]').forEach(el => {
-    el.addEventListener('change', function() {
-      const addressInput = document.getElementById('address');
-      if (this.value === 'Drop-off') {
-        addressInput.value = '10227 Park Estates Ave, Orlando, FL';
-        addressInput.readOnly = true;
-        addressInput.style.color = 'var(--text-dim)';
-      } else {
-        addressInput.value = '';
-        addressInput.readOnly = false;
-        addressInput.style.color = '';
-      }
-    });
-  });
-
   document.querySelectorAll('input[name="vehicleType"], input[name="service"]').forEach(el => {
     el.addEventListener('change', async function() {
       updateTotal();
@@ -643,26 +603,20 @@
   if (bookingForm) {
     bookingForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const vehicleType  = document.querySelector('input[name="vehicleType"]:checked')?.value;
-      const service      = document.querySelector('input[name="service"]:checked')?.value;
-      const serviceTypeEl = document.querySelector('input[name="serviceType"]:checked');
-
-      const timeEl = document.querySelector('input[name="time"]:checked');
-      if (!vehicleType)   { alert('Please select a vehicle type.'); return; }
-      if (!service)       { alert('Please select a service.'); return; }
-      if (!serviceTypeEl) { alert('Please select Mobile or Drop-off.'); return; }
-      if (!timeEl)        { alert('Please select a time.'); return; }
+      const vehicleType = document.querySelector('input[name="vehicleType"]:checked')?.value;
+      const service     = document.querySelector('input[name="service"]:checked')?.value;
+      const timeEl      = document.querySelector('input[name="time"]:checked');
+      if (!vehicleType) { alert('Please select a vehicle type.'); return; }
+      if (!service)     { alert('Please select a service.'); return; }
+      if (!timeEl)      { alert('Please select a time.'); return; }
 
       const formData = {
         vehicleType, service,
-        wax: document.getElementById('waxCheck').checked,
-        serviceType: serviceTypeEl.value,
+        wax:     document.getElementById('waxCheck').checked,
         name:    document.getElementById('name').value,
-        phone:   document.getElementById('phone').value,
         email:   document.getElementById('email').value,
         date:    document.getElementById('dateInput').value,
         time:    timeEl.value,
-        vehicle: document.getElementById('vehicle').value,
         address: document.getElementById('address').value,
         notes:   document.getElementById('notes').value,
       };

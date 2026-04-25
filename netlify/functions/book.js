@@ -63,7 +63,7 @@ exports.handler = async function (event) {
     };
   }
 
-  const { vehicleType, service, wax, name, email, phone, date, time, vehicle, address, notes, serviceType } = body;
+  const { vehicleType, service, wax, name, email, date, time, address, notes } = body;
 
   const vehicleIds = EVENT_IDS[vehicleType];
   if (!vehicleIds) {
@@ -94,6 +94,7 @@ exports.handler = async function (event) {
     };
   }
 
+  const waxPrice = vehicleType === 'suv' ? 20 : 15;
   const payload = {
     start: isoDateTime,
     eventTypeId,
@@ -103,17 +104,12 @@ exports.handler = async function (event) {
       timeZone: 'America/New_York',
       language: 'en',
     },
-    location: serviceType.includes('Mobile')
-      ? (address || 'Mobile — address not provided')
-      : 'Drop-off: 10227 Park Estates Ave, Orlando, FL',
-    title: `${name} — ${service} (${vehicleType})${wax ? ' + WAX' : ''}`,
-    bookingFieldsResponses: {
-      phone,
-      vehicle,
-      serviceType,
-      address: serviceType.includes('Mobile') ? (address || 'N/A') : '10227 Park Estates Ave, Orlando, FL',
-      wax: wax ? 'Yes' : 'No',
-      notes: `${notes || ''}${wax ? '\nWAX ADD-ON: Yes (+$' + (vehicleType === 'suv' ? '20' : '15') + ')' : ''}`.trim() || 'None',
+    location: address || 'Mobile — address not provided',
+    metadata: {
+      serviceType: 'Mobile',
+      address: address || 'Not provided',
+      wax: wax ? `Yes (+$${waxPrice})` : 'No',
+      notes: notes || 'None',
     },
   };
 
@@ -131,6 +127,7 @@ exports.handler = async function (event) {
     });
 
     const calData = await calResponse.json();
+    console.log('Cal.com response:', JSON.stringify(calData, null, 2));
 
     if (!calResponse.ok || (calData.status && calData.status !== 'success')) {
       const errorMessage = calData.error?.message || calData.message || 'Booking failed';
